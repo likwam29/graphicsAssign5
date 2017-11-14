@@ -33,6 +33,33 @@ uniform vec4 specularProduct;
 uniform float shininess;
 varying vec3 N, L, E;
 
+vec4 checker3D(vec3 texc, vec4 color0, vec4 color1)
+{
+  if ((int(floor(texc.x * 0.5) + floor(texc.y * 0.5) + floor(texc.z * 0.5)) + 1) == 0)
+    return color0;
+  else
+    return color1;
+}
+/*
+int mod(int thing, int other){
+	return thing - other * floor((float)(thing / other));
+}
+
+const int numSquaresPerCubeSide = 4; 
+vec4 otherOne(vec3 modelCoord, vec4 color0, vec4 color1){
+	vec3 cubeLoc = (modelCoord + 1.0) ; //range is now 0..2
+	cubeLoc = cubeLoc * float(numSquaresPerCubeSide); //range is now 0..2*numSquaresPerSide
+	cubeLoc = cubeLoc / 2.0 ; //range is now 0..numSquaresPerSide
+	//mod with 2.0 producing [0 .. 1.999...] for each component
+	cubeLoc = mod(cubeLoc,2) ;
+	//map values <1.0 to 0, values >=1.0 to 1, giving "sub-cube value" (0 or 1) in each direction
+	cubeLoc = floor(cubeLoc);
+	//sum the sub-cube values in each direction
+	int sum = int(cubeLoc.x+cubeLoc.y+cubeLoc.z) ;
+	//mod with 2 to determine even/odd (and hence color)
+	return mod(sum,2) == 0 ? color0 : color1;
+}
+*/
 void main()
 {    
     vec4 fColor;
@@ -51,8 +78,10 @@ void main()
     fColor = ambient + diffuse +specular;
     fColor.a = 1.0;
 
-    gl_FragColor = fColor;
-}
+    gl_FragColor = checker3D(N, vec4(1.0, 0.54, 1.0, 1.0), vec4(0.0, 0.5, 0.0, 1.0)) * fColor;
+} 
+
+
 </script>
 
 <script type="text/javascript" src="../Common/webgl-utils.js"></script>
