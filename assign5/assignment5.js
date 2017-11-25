@@ -197,6 +197,8 @@ onload = function init()  {
     document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
     document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
     document.getElementById("ButtonT").onclick = function(){flag = !flag;};
+	document.getElementById("ButtonS").onclick = function(){flag = !flag;};
+	
 
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program ); 
