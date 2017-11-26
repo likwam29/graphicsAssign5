@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute vec4 vPosition;
+attribute vec4 vNormal;
+varying vec3 N, L, E, objPos;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform vec4 lightPosition;
+
+void main()
+{
+    vec3 pos = (modelViewMatrix * vPosition).xyz;
+	objPos = vPosition.xyz;
+    vec3 light = lightPosition.xyz;
+    L = normalize( light - pos );
+    E = normalize(pos);
+    N = normalize( (modelViewMatrix*vNormal).xyz);
+    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+uniform vec4 ambientProduct;
+uniform vec4 diffuseProduct;
+uniform vec4 specularProduct;
+uniform float shininess;
+uniform float change;
+varying vec3 N, L, E, objPos;
+
+vec3 returnColor;
+
+void main()
+{    
+    vec4 fColor;
+    
+    vec3 H = normalize( L + E );
+    vec4 ambient = ambientProduct;
+
+    float Kd = max( dot(L, N), 0.0 );
+    vec4  diffuse = Kd*diffuseProduct;
+
+    float Ks = pow( max(dot(N, H), 0.0), shininess );
+    vec4  specular = Ks * specularProduct;
+    
+    if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+    fColor = ambient + diffuse +specular;
+    fColor.a = 1.0;
+	
+	float objectX = floor(objPos.x * 20.0);
+	float objectY = floor(objPos.y * 20.0);
+	float objectZ = floor(objPos.z * 20.0);
+	
+	float posMod = objectX + objectY + objectZ;
+	
+	if (change == 0.0)
+	{
+	
+		//Checkerboard
+		if( posMod - 4.0 * floor(posMod / 4.0) == 0.0) {
+			returnColor = vec3(1.0, 0.50, 0.0);
+		}
+		else if(posMod - 4.0 * floor(posMod / 4.0) == 1.0){
+			returnColor = vec3(0.0, .70, 0.20);
+		}
+		else if(posMod - 4.0 * floor(posMod / 4.0) == 2.0){
+			returnColor = vec3(1.0, 1.0, 1.0);
+		}
+		else{
+			returnColor = vec3(0.0, 0.0, 0.0);
+		}
+	}
+	else{
+		// some other texture
+		if(cos(posMod) == 1.0){
+			returnColor = vec3(0.0, .70, 0.20);
+		}else if(cos(posMod) > 0.5){
+			returnColor = vec3(1.0, 0.50, 0.0);
+		}else if(cos(posMod) > 0.25){
+			returnColor = vec3(0.0, 0.50, 0.5);
+		}else{
+			returnColor = vec3(1.0, 1.0, 1.0);
+		}
+	}
+	
+	float diffuseFactor = dot(N,L);
+    gl_FragColor = vec4(diffuseFactor * returnColor, 1.0);
+} 
+
+
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="vertices.js"></script>
+<script type="text/javascript" src="patches.js"></script>
+<script type="text/javascript" src="assignment5.js"></script>
+
+<body>
+<canvas id="gl-canvas" width="600" height="600">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<p>
+<button id = "ButtonX">Rotate X</button>
+<button id = "ButtonY">Rotate Y</button>
+<button id = "ButtonZ">Rotate Z</button>
+<button id = "ButtonT">CheckerBoard 1</button>
+<button id = "ButtonS">Second Procedural Texture</button>
+</p>  
+</body>
+</html>
