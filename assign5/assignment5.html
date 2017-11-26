@@ -32,6 +32,7 @@ uniform vec4 ambientProduct;
 uniform vec4 diffuseProduct;
 uniform vec4 specularProduct;
 uniform float shininess;
+uniform float change;
 varying vec3 N, L, E, objPos;
 
 vec3 returnColor;
@@ -60,32 +61,34 @@ void main()
 	
 	float posMod = objectX + objectY + objectZ;
 	
+	if (change == 0.0)
+	{
 	
-	/*
-	Checkerboard
-	if( posMod - 4.0 * floor(posMod / 4.0) == 0.0) {
-		returnColor = vec3(1.0, 0.50, 0.0);
-	}
-	else if(posMod - 4.0 * floor(posMod / 4.0) == 1.0){
-		returnColor = vec3(0.0, .70, 0.20);
-	}
-	else if(posMod - 4.0 * floor(posMod / 4.0) == 2.0){
-		returnColor = vec3(1.0, 1.0, 1.0);
+		//Checkerboard
+		if( posMod - 4.0 * floor(posMod / 4.0) == 0.0) {
+			returnColor = vec3(1.0, 0.50, 0.0);
+		}
+		else if(posMod - 4.0 * floor(posMod / 4.0) == 1.0){
+			returnColor = vec3(0.0, .70, 0.20);
+		}
+		else if(posMod - 4.0 * floor(posMod / 4.0) == 2.0){
+			returnColor = vec3(1.0, 1.0, 1.0);
+		}
+		else{
+			returnColor = vec3(0.0, 0.0, 0.0);
+		}
 	}
 	else{
-		returnColor = vec3(0.0, 0.0, 0.0);
-	}
-	*/
-	
-	// some other texture
-	if(cos(posMod) == 1.0){
-		returnColor = vec3(0.0, .70, 0.20);
-	}else if(cos(posMod) > 0.5){
-		returnColor = vec3(1.0, 0.50, 0.0);
-	}else if(cos(posMod) > 0.25){
-		returnColor = vec3(0.0, 0.50, 0.5);
-	}else{
-		returnColor = vec3(1.0, 1.0, 1.0);
+		// some other texture
+		if(cos(posMod) == 1.0){
+			returnColor = vec3(0.0, .70, 0.20);
+		}else if(cos(posMod) > 0.5){
+			returnColor = vec3(1.0, 0.50, 0.0);
+		}else if(cos(posMod) > 0.25){
+			returnColor = vec3(0.0, 0.50, 0.5);
+		}else{
+			returnColor = vec3(1.0, 1.0, 1.0);
+		}
 	}
 	
 	float diffuseFactor = dot(N,L);
@@ -110,8 +113,8 @@ Oops ... your browser doesn't support the HTML5 canvas element
 <button id = "ButtonX">Rotate X</button>
 <button id = "ButtonY">Rotate Y</button>
 <button id = "ButtonZ">Rotate Z</button>
-<button id = "ButtonT">Toggle Rotation</button>
-<button id = "ButtonS">Switch between checkerboard and an even better procedural texture</button>
+<button id = "ButtonT">CheckerBoard 1</button>
+<button id = "ButtonS">Second Procedural Texture</button>
 </p>  
 </body>
 </html>

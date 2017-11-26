@@ -174,6 +174,7 @@ compute_patch_points = function () {
 
 
 }
+var change = 0.0;
 
 
 onload = function init()  {
@@ -196,8 +197,14 @@ onload = function init()  {
     document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
     document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
     document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
-    document.getElementById("ButtonT").onclick = function(){flag = !flag;};
-	document.getElementById("ButtonS").onclick = function(){flag = !flag;};
+    document.getElementById("ButtonT").onclick = function(){
+		change = 0.0;
+		gl.uniform1f( gl.getUniformLocation(program, "change"),change );
+	};
+	document.getElementById("ButtonS").onclick = function(){
+		change = 1.0;
+		gl.uniform1f( gl.getUniformLocation(program, "change"),change );
+	};
 	
 
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
