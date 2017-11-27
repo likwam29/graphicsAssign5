@@ -1,3 +1,8 @@
+//Matthew Likwarz
+//Sean Mitchell
+//Assignment 5
+// GGW made a 4 color checkerboard that looks like snakeskin... kinda and made 3 procedural textures
+
 // assign5-starter-code.js
 
 // Assumes vertices for patches and indices of patch pointers into
@@ -203,6 +208,10 @@ onload = function init()  {
 	};
 	document.getElementById("ButtonS").onclick = function(){
 		change = 1.0;
+		gl.uniform1f( gl.getUniformLocation(program, "change"),change );
+	};
+	document.getElementById("ButtonU").onclick = function(){
+		change = 2.0;
 		gl.uniform1f( gl.getUniformLocation(program, "change"),change );
 	};
 	
