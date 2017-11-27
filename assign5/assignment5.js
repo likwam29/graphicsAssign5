@@ -3,6 +3,10 @@
 //Assignment 5
 // GGW made a 4 color checkerboard that looks like snakeskin... kinda and made 3 procedural textures
 
+// we came up with the snakeskin texture by modifying our checkerboard to include 4 different colors. Then we sized
+// the squares down so they would resemble small scales. 
+
+
 // assign5-starter-code.js
 
 // Assumes vertices for patches and indices of patch pointers into
